@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/customers-who-bought-products-a-and-b-but-not-c
+
+/* Write your T-SQL query statement below */
+
+with r1 as (
+select
+    customer_id
+from
+    Orders
+where
+    product_name = 'A'
+intersect
+select
+    customer_id
+from
+    Orders
+where
+    product_name = 'B'
+except
+select
+    customer_id
+from
+    Orders
+where
+    product_name = 'C'
+)
+select 
+    c.customer_id, 
+    c.customer_name
+from
+    Customers c,
+    r1
+where
+    r1.customer_id = c.customer_id
+
+    
+
+
+

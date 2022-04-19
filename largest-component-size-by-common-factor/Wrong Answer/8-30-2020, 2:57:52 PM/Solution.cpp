@@ -1,0 +1,63 @@
+// https://leetcode.com/problems/largest-component-size-by-common-factor
+
+class Solution {
+public:
+    int largestComponentSize(vector<int>& A) {
+        
+        int maxelem = *max_element(A.begin(), A.end()); 
+        unordered_map<int, int> parent; 
+        unordered_map<int, int> setsize;
+        for (int i : A) {
+            parent[i] = -1; 
+            ++setsize[i]; 
+        }
+        
+        function<int(int)> find = [&](int node) -> int {
+            if (parent[node] == -1) {
+                return node; 
+            } else {
+                parent[node] = find(parent[node]); 
+                return parent[node]; 
+            }
+        };
+        
+        function<bool(int,int)> onion = [&](int a, int b) -> int {
+            int pa = find(a); 
+            int pb = find(b); 
+            if (pa != pb) {
+                parent[pa] = pb; 
+                setsize[pb] += setsize[pa];
+                return true; 
+            }
+            return false; 
+        }; 
+        
+        
+        vector<bool> sv(maxelem, true); 
+        int lim = sqrt(maxelem); 
+        int ans = 0; 
+        for (int i = 2; i <= lim; ++i) {
+            if (sv[i]) {
+                int num = -1; 
+                for (int j = i; j <= maxelem; j += i) {
+                    if (parent.find(j) != parent.end()) {
+                        num = j; 
+                        break; 
+                    }
+                }
+                
+                if (num != -1) {
+                    for (int j = 2 * i; j <= maxelem; j += i) {
+                        if (parent.find(j) != parent.end()) {
+                            onion(j, num); 
+                            ans = max(ans, setsize[find(j)]); 
+                        }
+                        sv[i] = false; 
+                    }
+                }
+            }
+        }
+        
+        return ans; 
+    }
+};

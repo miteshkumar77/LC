@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/determine-whether-matrix-can-be-obtained-by-rotation
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& mat) {
+        int n = mat.size();
+        for (int i = 0; i < n; ++i) {
+            for (int j = i; j < n; ++j) {
+                swap(mat[i][j], mat[j][i]);
+            }
+        }
+        
+        for (int i = 0; i < n; ++i) {
+            int l = 0;
+            int r = n - 1;
+            while(l < r) swap(mat[i][l++], mat[i][r--]);
+        }
+    }
+    
+    bool findRotation(vector<vector<int>>& mat, vector<vector<int>>& target) {
+        for (int i = 0; i < 5; ++i) {
+            if (mat == target) return true;
+            rotate(mat);
+        }
+        return false;
+    }
+};

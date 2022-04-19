@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/fix-product-name-format
+
+select
+    lower(trim(s.product_name)) as PRODUCT_NAME,
+    left(s.sale_date, 7) as SALE_DATE,
+    count(*) as TOTAL
+from
+    Sales s
+group by
+    1,2
+order by
+    1,2
+    

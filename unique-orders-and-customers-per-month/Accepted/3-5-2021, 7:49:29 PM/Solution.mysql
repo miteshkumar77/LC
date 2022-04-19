@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/unique-orders-and-customers-per-month
+
+select
+    left(o.order_date, 7) as month,
+    count(distinct o.order_id) as order_count,
+    count(distinct o.customer_id) as customer_count
+from
+    Orders o
+where
+    o.invoice > 20
+group by
+    left(o.order_date, 7)

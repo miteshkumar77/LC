@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/restore-the-array
+
+class Solution {
+public:
+    typedef unsigned long long int ulli;
+    int numberOfArrays(string s, int k) {
+        ulli n = s.length();
+        vector<int> dp(n + 1, 0);
+        dp[0] = 1;
+        ulli mul;
+        ulli num;
+        ulli j;
+        ulli M = 1e9 + 7;
+        //for (int i : dp) cout << i << ' ';
+        //cout << endl;
+        for (int i = 1; i <= n; ++i) {
+            mul = 1;
+            num = 0;
+            j = i;
+            while(j >= 1 && num <= k) {
+                num += mul * (s[--j] - '0');
+               //if (mul < INT_MAX/10) { 
+                    mul *= 10;
+               //}
+                
+                if (s[j] != '0' && num >= 1 && num <= k) {
+                    dp[i] += dp[j];
+                    dp[i] %= M;
+                }
+            }
+            if (dp[i] == 0 && s[i - 1] == '0') {
+                cout << "HI" << endl;
+                return 0;
+            }
+            //for (int i : dp) cout << i << ' ';
+            //cout << endl;
+        }
+        return dp.back();
+    }
+};

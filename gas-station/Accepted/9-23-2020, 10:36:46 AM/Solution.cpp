@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/gas-station
+
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        
+        int n = gas.size(); 
+        vector<int> pre(n); // lowest gas level we can reach if we started from position 0 and moved right.
+        pre[0] = gas[0] - cost[0]; 
+        int sum = pre[0]; 
+        for (int i = 1; i < n; ++i) {
+            sum += gas[i] - cost[i]; 
+            pre[i] = min(sum, pre[i - 1]); 
+        }
+        
+        
+        sum = 0;
+        int prevmin = 0;
+        for (int i = n - 1; i >= 1; --i) {
+            
+            int dif = gas[i] - cost[i]; 
+            sum += dif;
+            if (dif + prevmin >= 0 && sum + pre[i - 1] >= 0) {
+                return i;
+            }
+            prevmin = min(prevmin + dif, sum);
+
+        }
+        int dif = gas[0] - cost[0]; 
+        sum += dif;
+        prevmin = min(prevmin + dif, sum); 
+
+        if (prevmin >= 0) {
+            return 0; 
+        }
+        
+        
+        return -1;
+        
+    }
+};
