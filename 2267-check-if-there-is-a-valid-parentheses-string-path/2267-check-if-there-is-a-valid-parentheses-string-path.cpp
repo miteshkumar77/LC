@@ -3,6 +3,11 @@ public:
     bool hasValidPath(vector<vector<char>>& grid) {
         int n = grid.size();
         int m = grid[0].size();
+        
+        if (((n + m) % 2) == 0) {
+            return false;
+        }
+        
         vector<vector<vector<bool>>> dp(n+1, 
             vector<vector<bool>>(m+1, vector<bool>(n + m + 1, false)));
         
