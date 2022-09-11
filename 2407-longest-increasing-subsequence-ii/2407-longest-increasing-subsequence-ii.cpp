@@ -49,6 +49,7 @@ public:
         }
         
         ll update(size_t i, ll v) {
+            if (v == data[i]) return data[i];
             return update(0, 1, (ll)data.size() - 1, i, v);
         }
         SegTree(vector<ll>&& A) : tree(5 * A.size(), MIN_CONST), data(std::move(A)) {}
